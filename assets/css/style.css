@@ -2,3 +2,38 @@
     --purple: rgb(126, 27, 192);
     --black: rgb(17, 17, 17);
 }
+
+body{
+    background-color: var(--black);
+}
+
+nav {
+    display: inline-block;
+}
+#timer {
+    text-align: right;
+}
+
+#main {
+    font-size: 150%;
+    text-align: center;
+    margin-top: 100px;
+}
+
+#heading {
+    color: var(--purple);
+    font-size: 200%;
+}
+
+#writing {
+    color: var(--purple);
+    margin-top: 50px;
+    text-align: center;
+    flex-wrap: wrap;
+    margin-left: 400px;
+    margin-right: 400px;
+}
+
+#startBtn {
+    margin-top: 40px;
+}
