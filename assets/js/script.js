@@ -33,6 +33,14 @@ var ScoreButton = document.getElementById("scoreBtn");
 var timerEl = document.getElementById("timer");
 var container = document.getElementById("main");
 var Answers = document.getElementById("answers");
+var li1 = document.createElement("li");
+var li2 = document.createElement("li");
+var li3 = document.createElement("li");
+var li4 = document.createElement("li");
+li1.setAttribute("id", "li1")
+li2.setAttribute("id", "li2")
+li3.setAttribute("id", "li3")
+li4.setAttribute("id", "li4")
 
 var QA1 = {
     Q: "Commonly used data types DO NOT include:",
@@ -80,10 +88,22 @@ var QA5 = {
 };
 
 var Quiz = [QA1, QA2, QA3, QA4, QA5];
+var Score = 0
+var Name = ""
+var i = 0
 
-function runQuiz() {
+function startQuiz() {
+    timer();
 
-}
+    Head.textContent = Quiz[i].Q
+    Writing.textContent = ""
+    StartButton.style.visibility = "hidden";
+    Answers.append(li1, li2, li3, li4)
+    li1.textContent = Quiz[i].a1
+    li2.textContent = Quiz[i].a2
+    li3.textContent = Quiz[i].a3
+    li4.textContent = Quiz[i].a4
+};
 
 function setScores() {
 
@@ -94,8 +114,13 @@ function getScores() {
 }
 
 function checkAnswer() {
-
-}
+    if (this.value === Quiz[i].ca) {
+        Score+=10
+        return
+    } else if (this.value !== Quiz[i].ca) {
+        return false
+    }
+};
 
 function endQuiz() {
 
@@ -103,13 +128,14 @@ function endQuiz() {
 
 function timer() {
     var timeLeft = 75;
+    checkAnswer = true
 
     var timeInterval = setInterval(function() {
 
         if (checkAnswer !== true) {
             timeLeft = timeLeft - 10
             timerEl.textContent = "Time: " + timeLeft;
-            timeLeft--;
+             
         } else if (timeLeft > 1) {
             timerEl.textContent = "Time: " + timeLeft;
             timeLeft--;
@@ -118,12 +144,28 @@ function timer() {
             clearInterval(timeInterval);
             endQuiz();
         }
-    })
+    }, 1000);
 
 }
 
-function test() {
-    Head.textContent = Quiz[0].Q
-}
+StartButton.addEventListener("click", function(event) {
+    event.stopPropagation();
 
-StartButton.addEventListener("click", test);
+    startQuiz();
+});
+
+Answers.addEventListener("click", function(event) {
+    var element = event.target;
+    checkAnswer(element);
+    if (element.matches("li") === true) {
+        console.log("This works too!")
+        i++;
+        Head.textContent = Quiz[i].Q
+        li1.textContent = Quiz[i].a1
+        li2.textContent = Quiz[i].a2
+        li3.textContent = Quiz[i].a3
+        li4.textContent = Quiz[i].a4
+    } else if (i > 4) {
+
+    }
+  });
