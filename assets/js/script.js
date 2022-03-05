@@ -26,13 +26,13 @@
 // Create a variable for the highscores
 // Create a variable for all the questions and answers
 
-var StartButton = document.getElementById("startBtn")
-var Head = document.getElementById("heading")
-var Writing = document.getElementById("writing")
-var ScoreButton = document.getElementById("scoreBtn")
-var timerEl = document.getElementById("timer")
-var container = document.getElementById("main")
-var Answers = document.getElementById("answers")
+var StartButton = document.getElementById("startBtn");
+var Head = document.getElementById("heading");
+var Writing = document.getElementById("writing");
+var ScoreButton = document.getElementById("scoreBtn");
+var timerEl = document.getElementById("timer");
+var container = document.getElementById("main");
+var Answers = document.getElementById("answers");
 
 var QA1 = {
     Q: "Commonly used data types DO NOT include:",
@@ -41,7 +41,7 @@ var QA1 = {
     a3: "Alerts",
     a4: "Numbers",
     ca: "Alerts"
-}
+};
 
 var QA2 = {
     Q: "The Condition in an if/else statement is enclosed within _____.",
@@ -50,7 +50,7 @@ var QA2 = {
     a3: "Parentheses",
     a4: "Square Brackets",
     ca: "Parentheses"
-}
+};
 
 var QA3 = {
     Q: "Arrays in Javascript can be used to store ______.",
@@ -59,7 +59,7 @@ var QA3 = {
     a3: "Booleans",
     a4: "All Of The Above",
     ca: "All Of The Above"
-}
+};
 
 var QA4 = {
     Q: "String values must be enclosed within _____ when being assigned to variables.",
@@ -68,7 +68,7 @@ var QA4 = {
     a3: "Quotes",
     a4: "Parentheses",
     ca: "Quotes"
-}
+};
 
 var QA5 = {
     Q: "A very useful tool used during development and debugging for printing content to the debugger is:",
@@ -77,9 +77,9 @@ var QA5 = {
     a3: "For Loops",
     a4: "Console Log",
     ca: "Console Log"
-}
+};
 
-var Quiz = [QA1, QA2, QA3, QA4, QA5]
+var Quiz = [QA1, QA2, QA3, QA4, QA5];
 
 function runQuiz() {
 
@@ -93,6 +93,37 @@ function getScores() {
 
 }
 
-function timer() {
+function checkAnswer() {
 
 }
+
+function endQuiz() {
+
+}
+
+function timer() {
+    var timeLeft = 75;
+
+    var timeInterval = setInterval(function() {
+
+        if (checkAnswer !== true) {
+            timeLeft = timeLeft - 10
+            timerEl.textContent = "Time: " + timeLeft;
+            timeLeft--;
+        } else if (timeLeft > 1) {
+            timerEl.textContent = "Time: " + timeLeft;
+            timeLeft--;
+        } else {
+            timerEl.textContent = "Time: 0";
+            clearInterval(timeInterval);
+            endQuiz();
+        }
+    })
+
+}
+
+function test() {
+    Head.textContent = Quiz[0].Q
+}
+
+StartButton.addEventListener("click", test);
