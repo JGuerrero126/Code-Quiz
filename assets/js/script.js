@@ -26,7 +26,13 @@
 // Create a variable for the highscores
 // Create a variable for all the questions and answers
 
-var Quiz = [QA1, QA2, QA3, QA4, QA5]
+var StartButton = document.getElementById("startBtn")
+var Head = document.getElementById("heading")
+var Writing = document.getElementById("writing")
+var ScoreButton = document.getElementById("scoreBtn")
+var timerEl = document.getElementById("timer")
+var container = document.getElementById("main")
+var Answers = document.getElementById("answers")
 
 var QA1 = {
     Q: "Commonly used data types DO NOT include:",
@@ -88,5 +94,5 @@ function getScores() {
 }
 
 function timer() {
-    
+
 }
