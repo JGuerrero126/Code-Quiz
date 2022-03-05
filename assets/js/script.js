@@ -91,6 +91,7 @@ var Quiz = [QA1, QA2, QA3, QA4, QA5];
 var Score = 0
 var Name = ""
 var i = 0
+var timeLeft = 75;
 
 function startQuiz() {
     timer();
@@ -113,30 +114,15 @@ function getScores() {
 
 }
 
-function checkAnswer() {
-    if (this.value === Quiz[i].ca) {
-        Score+=10
-        return
-    } else if (this.value !== Quiz[i].ca) {
-        return false
-    }
-};
-
 function endQuiz() {
+    Head.textContent = "All Done!"
+    Writing.textContent = "Your final score is " + Score + " with " + timeLeft + " seconds left on the clock!"
 
 }
-
 function timer() {
-    var timeLeft = 75;
-    checkAnswer = true
-
     var timeInterval = setInterval(function() {
 
-        if (checkAnswer !== true) {
-            timeLeft = timeLeft - 10
-            timerEl.textContent = "Time: " + timeLeft;
-             
-        } else if (timeLeft > 1) {
+        if (timeLeft > 1) {
             timerEl.textContent = "Time: " + timeLeft;
             timeLeft--;
         } else {
@@ -156,16 +142,49 @@ StartButton.addEventListener("click", function(event) {
 
 Answers.addEventListener("click", function(event) {
     var element = event.target;
-    checkAnswer(element);
-    if (element.matches("li") === true) {
-        console.log("This works too!")
-        i++;
+    console.log(element.textContent)
+    console.log(Quiz[i].ca)
+    if (element.textContent === Quiz[i].ca){
+        Score+=10
+        console.log(Score)
+        i++
+        if (i > Quiz.length) {
+            endQuiz();
+        } else {
         Head.textContent = Quiz[i].Q
         li1.textContent = Quiz[i].a1
         li2.textContent = Quiz[i].a2
         li3.textContent = Quiz[i].a3
         li4.textContent = Quiz[i].a4
-    } else if (i > 4) {
-
+        }
+        return
+    } else if (element.textContent !== Quiz[i].ca) {
+        Score-=10
+        timeLeft-=10
+        console.log(Score)
+        i++
+        if (i >= Quiz.length) {
+            endQuiz();
+        } else {
+        Head.textContent = Quiz[i].Q
+        li1.textContent = Quiz[i].a1
+        li2.textContent = Quiz[i].a2
+        li3.textContent = Quiz[i].a3
+        li4.textContent = Quiz[i].a4
+        }
+        return
+    } else if (element.matches("li") === true) {
+        console.log("This works too!")
+        i++;
+        if (i > Quiz.length) {
+            endQuiz();
+        } else {
+        Head.textContent = Quiz[i].Q
+        li1.textContent = Quiz[i].a1
+        li2.textContent = Quiz[i].a2
+        li3.textContent = Quiz[i].a3
+        li4.textContent = Quiz[i].a4
+        }
+       return
     }
-  });
+});
