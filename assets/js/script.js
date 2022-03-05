@@ -148,7 +148,7 @@ Answers.addEventListener("click", function(event) {
         Score+=10
         console.log(Score)
         i++
-        if (i > Quiz.length) {
+        if (i >= Quiz.length) {
             endQuiz();
         } else {
         Head.textContent = Quiz[i].Q
@@ -176,7 +176,7 @@ Answers.addEventListener("click", function(event) {
     } else if (element.matches("li") === true) {
         console.log("This works too!")
         i++;
-        if (i > Quiz.length) {
+        if (i >= Quiz.length) {
             endQuiz();
         } else {
         Head.textContent = Quiz[i].Q
