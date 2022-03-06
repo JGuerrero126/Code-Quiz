@@ -99,8 +99,12 @@ var Score = 0
 var Name = ""
 var i = 0
 var timeLeft = 75;
-var scores = []
-var names = []
+
+function init() {
+    Head.textContent = "Coding Quiz Challenge"
+    Writing.textContent = "Try to answer the following coding-related questions within the time limit. Keep in mind that incorrect answers will penalize your Score/Time by 10 Seconds!"
+    StartButton.style.visibility = "visible"
+}
 
 function startQuiz() {
     timer();
@@ -116,26 +120,10 @@ function startQuiz() {
 };
 
 function setScores() {
-    var userInit = initInput.value.trim();
-    console.log(userInit)
-    localStorage.setItem("Initials", userInit);
-    localStorage.setItem("Score", JSON.stringify(Score));
+
 }
 
 function getScores() {
-    var storedScore = localStorage.getItem("Score");
-    var storedInit = JSON.parse(localStorage.getItem("Initials"));
-
-    if (storedScore !== null) {
-      scores = storedScore;
-    }
-    
-    if (storedInit !== null) {
-        names = storedInit;
-      }
-
-
-  
 
 }
 
@@ -147,15 +135,12 @@ function endQuiz() {
     Writing.appendChild(initButton)
     initSection.textContent = "Please enter your initials to store your score!"
     initButton.textContent = "Submit"
-
-
     li1.remove()
     li2.remove()
     li3.remove()
     li4.remove()
-
-
 }
+
 function timer() {
     var timeInterval = setInterval(function() {
 
@@ -177,7 +162,8 @@ function timer() {
 }
 
 function scoreScreen() {
-
+    Head.textContent = "High Scores!"
+    Writing.textContent = " "
 }
 
 StartButton.addEventListener("click", function(event) {
@@ -219,26 +205,23 @@ Answers.addEventListener("click", function(event) {
         li4.textContent = Quiz[i].a4
         }
         return
-    } else if (element.matches("li") === true) {
-        console.log("This works too!")
-        i++;
-        if (i >= Quiz.length) {
-            endQuiz();
-        } else {
-        Head.textContent = Quiz[i].Q
-        li1.textContent = Quiz[i].a1
-        li2.textContent = Quiz[i].a2
-        li3.textContent = Quiz[i].a3
-        li4.textContent = Quiz[i].a4
-        }
-       return
     }
 });
 
-Writing,addEventListener("click", function(event) {
+Writing.addEventListener("click", function(event) {
     var element = event.target
-    if(element.matches("button")) {
-        setScores();
 
+    if(element.matches("button")) {
+        scoreScreen();
     }
 })
+
+initSection.addEventListener("click", function(event) {
+    var element = event.target
+
+    if (element.matches("button")) {
+        init();
+    }
+});
+
+init();
