@@ -219,6 +219,10 @@ function scoreScreen() {
     Writing.style.visibility = "hidden"
     StartButton.style.visibility = "hidden"
     container.append(Scorelist)
+    container.append(goBackButton)
+    container.append(deleteButton)
+    goBackButton.textContent = "Go Back"
+    deleteButton.textContent = "Delete High Scores"
     Answers.remove();
 
     for (var j = 0; j < storedScores.length; j++) {
@@ -230,12 +234,6 @@ function scoreScreen() {
         
         Scorelist.appendChild(scorelist);
     }
-
-    container.append(goBackButton)
-    container.append(deleteButton)
-    goBackButton.textContent = "Go Back"
-    deleteButton.textContent = "Delete High Scores"
-
 }
 //  This event listener is what triggers the start of the quiz, after this everything is handled by the next event listener
 StartButton.addEventListener("click", function(event) {
