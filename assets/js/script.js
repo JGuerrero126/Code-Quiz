@@ -37,10 +37,17 @@ var li1 = document.createElement("li");
 var li2 = document.createElement("li");
 var li3 = document.createElement("li");
 var li4 = document.createElement("li");
+var initInput = document.createElement("input");
+var initButton = document.createElement("button")
+var initSection = document.createElement("p")
 li1.setAttribute("id", "li1")
 li2.setAttribute("id", "li2")
 li3.setAttribute("id", "li3")
 li4.setAttribute("id", "li4")
+initInput.setAttribute("type", "text")
+initInput.setAttribute("id", "initInput")
+initButton.setAttribute("id", "initBtn")
+initSection.setAttribute("id", "initSection")
 
 var QA1 = {
     Q: "Commonly used data types DO NOT include:",
@@ -92,6 +99,8 @@ var Score = 0
 var Name = ""
 var i = 0
 var timeLeft = 75;
+var scores = []
+var names = []
 
 function startQuiz() {
     timer();
@@ -107,30 +116,67 @@ function startQuiz() {
 };
 
 function setScores() {
-
+    var userInit = initInput.value.trim();
+    console.log(userInit)
+    localStorage.setItem("Initials", userInit);
+    localStorage.setItem("Score", JSON.stringify(Score));
 }
 
 function getScores() {
+    var storedScore = localStorage.getItem("Score");
+    var storedInit = JSON.parse(localStorage.getItem("Initials"));
+
+    if (storedScore !== null) {
+      scores = storedScore;
+    }
+    
+    if (storedInit !== null) {
+        names = storedInit;
+      }
+
+
+  
 
 }
 
 function endQuiz() {
     Head.textContent = "All Done!"
     Writing.textContent = "Your final score is " + Score + " with " + timeLeft + " seconds left on the clock!"
+    Writing.appendChild(initSection)
+    Writing.appendChild(initInput)
+    Writing.appendChild(initButton)
+    initSection.textContent = "Please enter your initials to store your score!"
+    initButton.textContent = "Submit"
+
+
+    li1.remove()
+    li2.remove()
+    li3.remove()
+    li4.remove()
+
 
 }
 function timer() {
     var timeInterval = setInterval(function() {
 
-        if (timeLeft > 1) {
+        if (i >= Quiz.length) {
+            clearInterval(timeInterval)
+            timerEl.textContent = "Time: 0"
+        } else if (timeLeft > 1) {
             timerEl.textContent = "Time: " + timeLeft;
             timeLeft--;
+        } else if (i >= Quiz.length) {
+            clearInterval(timeInterval)
         } else {
             timerEl.textContent = "Time: 0";
-            clearInterval(timeInterval);
             endQuiz();
+            clearInterval(timeInterval);
         }
     }, 1000);
+
+}
+
+function scoreScreen() {
 
 }
 
@@ -188,3 +234,11 @@ Answers.addEventListener("click", function(event) {
        return
     }
 });
+
+Writing,addEventListener("click", function(event) {
+    var element = event.target
+    if(element.matches("button")) {
+        setScores();
+
+    }
+})
