@@ -37,14 +37,17 @@ var li2 = document.createElement("li");
 var li3 = document.createElement("li");
 var li4 = document.createElement("li");
 var initInput = document.createElement("input");
-var initButton = document.createElement("button")
-var initSection = document.createElement("p")
-var goBackButton = document.createElement("button")
-var deleteButton = document.createElement("button")
+var initButton = document.createElement("button");
+var initSection = document.createElement("p");
+var goBackButton = document.createElement("button");
+var deleteButton = document.createElement("button");
 var Answers = document.createElement("ol");
-var Scorelist = document.createElement("ol")
+var Scorelist = document.createElement("ol");
+var Marker = document.createElement("p");
+Marker.setAttribute("class", "marker");
+Marker.setAttribute("id", "marker");
 Answers.setAttribute("id", "Answers");
-Scorelist.setAttribute("id", "Scorelist")
+Scorelist.setAttribute("id", "Scorelist");
 li1.setAttribute("id", "li1");
 li2.setAttribute("id", "li2");
 li3.setAttribute("id", "li3");
@@ -112,6 +115,24 @@ var i = 0
 var timeLeft = 75;
 var HighScores = []
 
+function rightMarker() {
+    container.append(Marker)
+    Marker.textContent = "Right!"
+    setTimeout(function(){
+        $('#marker').remove();
+      }, 2000);
+    
+}
+
+function wrongMarker() {
+    container.append(Marker)
+    Marker.textContent = "Wrong!"
+    setTimeout(function(){
+        $('#marker').remove();
+      }, 2000);
+    
+}
+
 function init() {
 
     Head.textContent = "Coding Quiz Challenge"
@@ -158,6 +179,7 @@ function setScores() {
 
 function endQuiz() {
     Head.textContent = "All Done!"
+    Writing.style.visibility = "visible"
     Writing.textContent = "Your final score is " + Score + " with " + timeLeft + " seconds left on the clock!"
     Writing.appendChild(initSection)
     Writing.appendChild(initInput)
@@ -202,7 +224,7 @@ function scoreScreen() {
     for (var j = 0; j < storedScores.length; j++) {
     
         var scorelist = document.createElement("li");
-        scorelist.textContent = storedScores[j].initials + " " + storedScores[j].score;
+        scorelist.textContent = "Initials: " + storedScores[j].initials + " Score:" + storedScores[j].score;
         scorelist.setAttribute("data-index", j);
         scorelist.setAttribute("class", "list")
         
@@ -230,6 +252,7 @@ Answers.addEventListener("click", function(event) {
     console.log(element.textContent)
     console.log(Quiz[i].ca)
     if (element.textContent === Quiz[i].ca){
+        rightMarker();
         Score+=10
         console.log(Score)
         i++
@@ -244,6 +267,7 @@ Answers.addEventListener("click", function(event) {
         }
         return
     } else if (element.textContent !== Quiz[i].ca) {
+        wrongMarker();
         Score-=10
         timeLeft-=10
         console.log(Score)

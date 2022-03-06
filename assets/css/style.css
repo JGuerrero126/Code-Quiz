@@ -62,3 +62,9 @@ nav {
     margin-left: 40%;
     border-radius: 8px;
 }
+
+.marker {
+    color: var(--red);
+    text-decoration: underline var(--red);
+    font-style: italic;
+}
