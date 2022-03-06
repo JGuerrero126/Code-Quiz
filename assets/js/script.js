@@ -32,7 +32,6 @@ var Writing = document.getElementById("writing");
 var ScoreButton = document.getElementById("scoreBtn");
 var timerEl = document.getElementById("timer");
 var container = document.getElementById("main");
-var Answers = document.getElementById("answers");
 var li1 = document.createElement("li");
 var li2 = document.createElement("li");
 var li3 = document.createElement("li");
@@ -40,14 +39,26 @@ var li4 = document.createElement("li");
 var initInput = document.createElement("input");
 var initButton = document.createElement("button")
 var initSection = document.createElement("p")
-li1.setAttribute("id", "li1")
-li2.setAttribute("id", "li2")
-li3.setAttribute("id", "li3")
-li4.setAttribute("id", "li4")
-initInput.setAttribute("type", "text")
-initInput.setAttribute("id", "initInput")
-initButton.setAttribute("id", "initBtn")
-initSection.setAttribute("id", "initSection")
+var goBackButton = document.createElement("button")
+var deleteButton = document.createElement("button")
+var Answers = document.createElement("ol");
+var Scorelist = document.createElement("ol")
+Answers.setAttribute("id", "Answers");
+Scorelist.setAttribute("id", "Scorelist")
+li1.setAttribute("id", "li1");
+li2.setAttribute("id", "li2");
+li3.setAttribute("id", "li3");
+li4.setAttribute("id", "li4");
+li1.setAttribute("class", "list");
+li2.setAttribute("class", "list");
+li3.setAttribute("class", "list");
+li4.setAttribute("class", "list");
+initInput.setAttribute("type", "text");
+initInput.setAttribute("id", "initInput");
+initButton.setAttribute("id", "initBtn");
+initSection.setAttribute("id", "initSection");
+goBackButton.setAttribute("id", "gobackBtn");
+deleteButton.setAttribute("id", "deleteBtn");
 
 var QA1 = {
     Q: "Commonly used data types DO NOT include:",
@@ -99,19 +110,29 @@ var Score = 0
 var Name = ""
 var i = 0
 var timeLeft = 75;
+var HighScores = []
 
 function init() {
+
     Head.textContent = "Coding Quiz Challenge"
     Writing.textContent = "Try to answer the following coding-related questions within the time limit. Keep in mind that incorrect answers will penalize your Score/Time by 10 Seconds!"
+    Writing.style.visibility = "visible"
     StartButton.style.visibility = "visible"
+    goBackButton.remove();
+    deleteButton.remove()
+    Scorelist.remove();
+    i = 0
+    timeLeft = 75
+    Score = 0
 }
 
 function startQuiz() {
     timer();
 
     Head.textContent = Quiz[i].Q
-    Writing.textContent = ""
+    Writing.style.visibility = "hidden"
     StartButton.style.visibility = "hidden";
+    container.append(Answers)
     Answers.append(li1, li2, li3, li4)
     li1.textContent = Quiz[i].a1
     li2.textContent = Quiz[i].a2
@@ -120,11 +141,19 @@ function startQuiz() {
 };
 
 function setScores() {
+    Name = initInput.value.trim();
 
-}
+    HighScores[HighScores.length] = {
+        initials: Name,
+        score: Score
+    };
 
-function getScores() {
-
+    if (HighScores.length > 1) {
+        HighScores.sort(function(a,b) {
+            return b.score-a.score; 
+        });
+    }
+    localStorage.setItem("HighScores", JSON.stringify(HighScores));
 }
 
 function endQuiz() {
@@ -162,18 +191,42 @@ function timer() {
 }
 
 function scoreScreen() {
+    Scorelist.innerHTML = ""
+    var storedScores = JSON.parse(localStorage.getItem("HighScores"));
     Head.textContent = "High Scores!"
-    Writing.textContent = " "
-}
+    Writing.style.visibility = "hidden"
+    StartButton.style.visibility = "hidden"
+    container.append(Scorelist)
+    Answers.remove();
 
+    for (var j = 0; j < storedScores.length; j++) {
+    
+        var scorelist = document.createElement("li");
+        scorelist.textContent = storedScores[j].initials + " " + storedScores[j].score;
+        scorelist.setAttribute("data-index", j);
+        scorelist.setAttribute("class", "list")
+        
+        Scorelist.appendChild(scorelist);
+    }
+
+    container.append(goBackButton)
+    container.append(deleteButton)
+    goBackButton.textContent = "Go Back"
+    deleteButton.textContent = "Delete High Scores"
+
+}
+//  This event listener is what triggers the start of the quiz, after this everything is handled by the next event listener
 StartButton.addEventListener("click", function(event) {
     event.stopPropagation();
 
     startQuiz();
 });
-
+// This event listener is what runs the majority of the quiz including switching all the questions and answers as well as checking if the answer was right or wrong
 Answers.addEventListener("click", function(event) {
+    event.stopPropagation();
     var element = event.target;
+
+    if (element.matches("li")) {
     console.log(element.textContent)
     console.log(Quiz[i].ca)
     if (element.textContent === Quiz[i].ca){
@@ -206,22 +259,44 @@ Answers.addEventListener("click", function(event) {
         }
         return
     }
+}
 });
-
+// This event listener is what triggers the switch to the high scores page as well as storing the users name and high score
 Writing.addEventListener("click", function(event) {
+    event.stopPropagation();
     var element = event.target
 
     if(element.matches("button")) {
+        setScores();
         scoreScreen();
     }
 })
 
-initSection.addEventListener("click", function(event) {
+ScoreButton.addEventListener("click", function(event) {
+    event.stopPropagation();
+    var element = event.target
+
+    if (element.matches("button")) {
+        scoreScreen();
+    }
+});
+
+goBackButton.addEventListener("click", function(event) {
+    event.stopPropagation();
     var element = event.target
 
     if (element.matches("button")) {
         init();
     }
 });
+
+deleteButton.addEventListener("click", function(event) {
+    event.stopPropagation();
+    var element = event.target
+
+    if (element.matches("button")) {
+        localStorage.clear();
+    }
+})
 
 init();

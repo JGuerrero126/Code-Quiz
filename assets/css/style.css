@@ -52,7 +52,7 @@ nav {
     margin-top: 40px;
 }
 
-#answers li {
+.list {
     display: block;
     text-align: center;
     color: aliceblue;
